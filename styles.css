@@ -1,0 +1,385 @@
+:root {
+    /* PASTEL PALETTE */
+    --bg-gradient: linear-gradient(120deg, #ff9a9e 0%, #fecfef 50%, #e0c3fc 100%);
+    --text-main: #1a1a1a;
+    --glass-white: rgba(255, 255, 255, 0.25);
+    --border-color: rgba(255, 255, 255, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-main);
+    background: var(--bg-gradient);
+    background-size: 200% 200%;
+    animation: gradientMove 10s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.9;
+}
+
+h1 { font-size: 8vw; letter-spacing: -0.08em; mix-blend-mode: overlay; }
+h2 { font-size: 5vw; margin-bottom: 2rem; text-align: center; }
+
+/* HERO SECTION FIXES */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* SHIFT TEXT LEFT: Reduced left padding, kept right padding high */
+    padding-left: 5vw; 
+    padding-right: 10vw; 
+    gap: 2rem;
+}
+
+.hero-image {
+    /* Ensure the container respects the border radius */
+    border-radius: 30px; 
+    overflow: hidden; /* CRITICAL: This cuts the sharp corners off the image */
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.2); /* Adds depth */
+    
+    /* Size control */
+    width: 400px; 
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Make sure the actual photo fits inside */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures photo fills the rounded box without stretching */
+}
+
+/* POSTER SIZE FIXES (Work Section) */
+.poster-placeholder img, 
+.work-media img {
+    /* CONSTRAINT: Stops it from covering the whole screen */
+    max-width: 100%;
+    max-height: 60vh; /* Limits height to 60% of screen */
+    width: auto;      /* Maintains aspect ratio */
+    
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    object-fit: contain;
+}
+
+
+
+/* BENTO GRID */
+.tools-section {
+    padding: 10vh 5vw;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.bento-item {
+    background: var(--glass-white);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+    font-size: 30px;
+}
+
+.bento-item.tall img{
+    height: 65px;
+    width: 65px;
+}
+
+
+
+.bento-item:hover { transform: scale(1.05); background: rgba(255,255,255,0.4); }
+.bento-item.wide { grid-column: span 2; }
+.bento-item.tall { grid-row: span 2; height: auto; }
+
+.icon { width: 40px; opacity: 0.8; }
+
+/* SCROLLYTELLING SECTION */
+.work-section { padding: 10vh 5vw; }
+
+.work-row {
+    display: flex;
+    align-items: center;
+    /* CHANGED: Brings items to the center instead of edges */
+    justify-content: center; 
+    /* CHANGED: Controls distance between Image and Text */
+    gap: 5rem; 
+    
+    margin-bottom: 15vh;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+
+.work-row.left-focus { flex-direction: row; }
+.work-row.right-focus { flex-direction: row-reverse; }
+
+.poster-placeholder {
+    width: 40vw;
+    height: 50vh;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.work-text { width: 40vw; font-size: 1.2rem; }
+
+/* SCROLLYTELLING IMAGES */
+.poster-placeholder, 
+.work-media img {
+    /* 1. REMOVE BLACK BOX */
+    background: transparent !important; 
+    box-shadow: none; /* Optional: removes shadow if you want a clean look */
+
+    /* 2. RESIZE */
+    max-height: 400px; /* Force it smaller */
+    width: auto;       /* Keep aspect ratio */
+    max-width: 100%;   
+    
+    border-radius: 15px;
+    object-fit: contain;
+}
+
+/* Ensure the container doesn't force a black background either */
+.work-media {
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* NAVIGATION DOCK - GLASS STYLE */
+.dock-nav {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    /* REMOVED the 'transform' line that was hiding it */
+    transform: translateX(-50%); 
+    
+    /* Glass Styles */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    
+    /* Ensure it sits on top of everything */
+    z-index: 9999; 
+    
+    display: flex;
+    gap: 2.5rem;
+    transition: bottom 0.4s ease; /* We animate 'bottom' instead of transform now */
+}
+
+/* When we add this class via JS, it sinks down */
+.dock-nav.hidden {
+    bottom: -100px; 
+}
+
+
+
+.dock-nav a {
+    color: #1a1a1a; /* Dark text for contrast on glass */
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.dock-nav a:hover { 
+    color: #000; 
+    opacity: 1;
+    transform: translateY(-2px); /* Little hop on hover */
+}
+
+
+/* HERO UPDATE: FULL WIDTH & CENTERED */
+.hero-section {
+    justify-content: left; /* Center everything horizontally */
+    text-align: left;      /* Center text alignment */
+    padding: 0 5vw;
+}
+
+.hero-content.full-width {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* THE NEW INTRO TEXT STYLING */
+.hero-intro {
+    margin-top: 2rem;
+    max-width: 800px; /* Keeps the text from getting too wide */
+    animation: fadeInUp 1.5s ease-out forwards;
+    opacity: 0; /* Starts hidden for animation */
+}
+
+.hero-intro p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem; /* Nice and readable */
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 1rem;
+}
+
+.role-highlight {
+    font-size: 30px;
+    margin-top: 1.5rem;      /* Moves it down from the name */
+    margin-left: 2vw;        /* Nudges it right to align with the name's start */
+    display: inline-block;   /* Keeps underline only under the text */
+    border-bottom: 2px solid var(--text-main); /* The highlight underline */
+    padding-bottom: 5px;
+    font-weight: 500;
+    text-align: left;        /* Ensures it doesn't stay centered if hero is centered */
+}
+
+
+.hero-intro strong {
+    font-weight: 700;
+    color: #000; /* Highlights key words in pure black */
+}
+
+/* Animation for the text popping up */
+@keyframes fadeInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* MOBILE TWEAK */
+@media (max-width: 768px) {
+    .hero-intro p { font-size: 1.1rem; }
+}
+
+/* CONTACT SECTION */
+.contact-section {
+    min-height: 90vh; /* Almost full screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 5vw;
+    position: relative;
+}
+
+.sub-head {
+    font-size: 1.8rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 5rem;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.contact-title {
+    font-size: 8vw; /* Massive text */
+    line-height: 0.85;
+    margin-bottom: 3rem;
+    color: var(--text-main);
+    /* Optional: Transparent text with outline */
+    -webkit-text-stroke: 2px var(--text-main); 
+    color: transparent;
+    transition: color 0.5s ease;
+}
+
+.contact-section:hover .contact-title {
+    color: var(--text-main); /* Fills in color on hover */
+}
+
+.email-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3vw;
+    text-decoration: none;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.email-big:hover {
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+/* SOCIAL BUTTONS */
+.social-links {
+    display: flex;
+    gap: 2rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.social-btn {
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--text-main);
+    border-radius: 50px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    background: rgba(255,255,255,0.1);
+}
+
+.social-btn:hover {
+    background: var(--text-main);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* SIMPLE FOOTER */
+.simple-footer {
+    position: absolute;
+    bottom: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.5;
+}
+
+/* MOBILE ADJUSTMENT */
+@media (max-width: 768px) {
+    .contact-title { font-size: 15vw; }
+    .email-big { font-size: 1.5rem; }
+    .social-links { gap: 1rem; }
+}
