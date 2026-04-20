@@ -127,62 +127,6 @@ h2 { font-size: 5vw; margin-bottom: 2rem; text-align: center; }
 
 .icon { width: 40px; opacity: 0.8; }
 
-/* SCROLLYTELLING SECTION */
-.work-section { padding: 10vh 5vw; }
-
-.work-row {
-    display: flex;
-    align-items: center;
-    /* CHANGED: Brings items to the center instead of edges */
-    justify-content: center; 
-    /* CHANGED: Controls distance between Image and Text */
-    gap: 5rem; 
-    
-    margin-bottom: 15vh;
-    opacity: 0;
-    transform: translateY(50px);
-}
-
-
-.work-row.left-focus { flex-direction: row; }
-.work-row.right-focus { flex-direction: row-reverse; }
-
-.poster-placeholder {
-    width: 40vw;
-    height: 50vh;
-    background: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-}
-
-.work-text { width: 40vw; font-size: 1.2rem; }
-
-/* SCROLLYTELLING IMAGES */
-.poster-placeholder, 
-.work-media img {
-    /* 1. REMOVE BLACK BOX */
-    background: transparent !important; 
-    box-shadow: none; /* Optional: removes shadow if you want a clean look */
-
-    /* 2. RESIZE */
-    max-height: 400px; /* Force it smaller */
-    width: auto;       /* Keep aspect ratio */
-    max-width: 100%;   
-    
-    border-radius: 15px;
-    object-fit: contain;
-}
-
-/* Ensure the container doesn't force a black background either */
-.work-media {
-    background: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 
 /* NAVIGATION DOCK - GLASS STYLE */
@@ -382,4 +326,129 @@ h2 { font-size: 5vw; margin-bottom: 2rem; text-align: center; }
     .contact-title { font-size: 15vw; }
     .email-big { font-size: 1.5rem; }
     .social-links { gap: 1rem; }
+}
+
+
+
+
+/* --- WORK SECTION --- */
+.work-section {
+    padding: 10vh 5vw;
+    overflow: hidden;
+}
+
+.work-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row; 
+    gap: 4rem;
+    margin-bottom: 15vh;
+    
+    /* Animation Start */
+    opacity: 0; 
+    transform: translateY(50px);
+}
+
+.work-media {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.work-media img, 
+.work-media video {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    
+    /* CLEAN LOOK: No background, No border */
+    background: transparent; 
+    box-shadow: none;
+    
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.work-media img:hover,
+.work-media video:hover {
+    transform: scale(1.02); /* Subtle zoom */
+}
+
+.work-text {
+    width: 40%;
+    text-align: left;
+}
+
+.work-text h3 { 
+    font-size: 2.2rem; 
+    margin-bottom: 0.5rem; 
+}
+
+.work-text .role-highlight { 
+    font-size: 0.9rem; 
+    /* Changed to a clean line for "Tools" */
+    border-bottom: 1px solid #333; 
+    display: inline-block; 
+    margin-bottom: 1rem;
+    padding-bottom: 2px;
+}
+
+/* --- LIGHTBOX & SPINNING CLOSE BTN --- */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); /* Dark background */
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox.active { display: flex; }
+
+.lightbox-media img, 
+.lightbox-media video {
+    max-width: 90vw; 
+    max-height: 90vh;
+    border-radius: 5px;
+}
+
+/* THE SPINNING X BUTTON */
+.close-btn {
+    position: absolute; 
+    top: 30px; 
+    right: 40px;
+    color: white; 
+    font-size: 3rem; 
+    cursor: pointer;
+    line-height: 1;
+    
+    /* Smooth Rotation */
+    transition: transform 0.5s ease, color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #ff4d4d; /* Turns red on hover */
+    transform: rotate(360deg); /* SPINS FULLY */
+}
+
+/* --- MOBILE FIX --- */
+@media (max-width: 768px) {
+    .work-row {
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 80px;
+    }
+    .work-media, .work-text { width: 100%; }
+    
+    h1 { font-size: 3.5rem !important; width: 100%; }
+    .work-text h3 { font-size: 1.8rem; }
+    
+    .dock-nav { width: 90%; bottom: 20px; padding: 12px; background: white; }
+    .dock-nav a { font-size: 11px; }
+    * { backdrop-filter: none !important; }
 }
