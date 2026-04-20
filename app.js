@@ -1,31 +1,40 @@
- 
- // 1. INITIALIZE LENIS (Smooth Scroll)
+// 1. INITIALIZE LENIS
 const lenis = new Lenis({
-    duration: 0.6, // REDUCED from 1.2 to 0.6 for snappier control
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true,
-    touchMultiplier: 2 // Makes it feel better on mobile/trackpads
+    smooth: true
 });
-
 function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
 
+// 2. NAVBAR LOGIC
+const nav = document.querySelector('.dock-nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    if (currentScroll > 50) {
+        if (currentScroll > lastScroll) {
+            nav.classList.add('hidden');
+        } else {
+            nav.classList.remove('hidden');
+        }
+    }
+    lastScroll = currentScroll;
+});
 
-// 2. INITIALIZE GSAP
+// 3. ANIMATION (Reveal Rows)
 gsap.registerPlugin(ScrollTrigger);
 
-// Animation: Reveal "Work" rows as you scroll
 const workRows = document.querySelectorAll('.work-row');
 
 workRows.forEach((row) => {
     gsap.to(row, {
         scrollTrigger: {
             trigger: row,
-            start: "top 80%", // Starts when top of element hits 80% of viewport height
-            end: "top 50%",
+            start: "top 80%", 
             toggleActions: "play none none reverse"
         },
         opacity: 1,
@@ -35,34 +44,42 @@ workRows.forEach((row) => {
     });
 });
 
-// Animation: Stagger the Bento Grid
-gsap.from(".bento-item", {
-    scrollTrigger: {
-        trigger: ".bento-grid",
-        start: "top 70%"
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.1 // Items appear one by one
-});
+// 4. LIGHTBOX LOGIC
+const workSection = document.querySelector('.work-section');
+const lightbox = document.getElementById('lightbox');
+const lightboxContent = document.getElementById('lightbox-content');
+const closeBtn = document.querySelector('.close-btn');
 
+// Open on Click
+if (workSection) {
+    workSection.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+            lightboxContent.innerHTML = '';
+            const clone = e.target.cloneNode(true);
+            
+            clone.style.cssText = ''; // Reset styles
+            if (clone.tagName === 'VIDEO') {
+                clone.setAttribute('controls', '');
+                clone.setAttribute('autoplay', '');
+                clone.muted = false;
+            }
+            
+            lightboxContent.appendChild(clone);
+            lightbox.classList.add('active');
+            lenis.stop(); 
+        }
+    });
+}
 
-// ROBUST NAV LOGIC
-let lastScroll = 0;
-const nav = document.querySelector('.dock-nav');
+// Close Logic
+function closePopup() {
+    lightbox.classList.remove('active');
+    lenis.start();
+}
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > lastScroll && currentScroll > 50) {
-        // Scrolling DOWN -> Hide Nav
-        nav.classList.add('hidden');
-    } else {
-        // Scrolling UP -> Show Nav
-        nav.classList.remove('hidden');
-    }
-    lastScroll = currentScroll;
-});
-
-
+if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closePopup();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', closePopup);
+}
